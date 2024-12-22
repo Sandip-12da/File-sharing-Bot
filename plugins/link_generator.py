@@ -5,7 +5,19 @@ from pyrogram.types import Message, InlineKeyboardMarkup, InlineKeyboardButton
 from bot import Bot
 from config import ADMINS
 from helper_func import encode, get_message_id
+from database.database import add_file_with_expiry
+from helper_func import calculate_expiration_time
 
+# In existing link generation methods, add:
+async def link_generator(client: Client, message: Message):
+    # ... existing code ...
+    
+    file_id = msg_id * abs(client.db_channel.id)
+    
+    # Add expiry tracking
+    await add_file_with_expiry(file_id)
+    
+    expiry_time = calculate_expiration_time()
 @Bot.on_message(filters.private & filters.user(ADMINS) & filters.command('batch'))
 async def batch(client: Client, message: Message):
     while True:
