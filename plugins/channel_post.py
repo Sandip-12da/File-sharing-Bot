@@ -8,6 +8,17 @@ from pyrogram.errors import FloodWait
 from bot import Bot
 from config import ADMINS, CHANNEL_ID, DISABLE_CHANNEL_BUTTON
 from helper_func import encode
+from database.database import add_file_with_expiry
+from helper_func import calculate_expiration_time
+
+# In file upload methods
+async def channel_post(client: Client, message: Message):
+    # ... existing code ...
+    
+    converted_id = post_message.id * abs(client.db_channel.id)
+    
+    # Add expiry tracking
+    await add_file_with_expiry(converted_id)
 
 @Bot.on_message(filters.private & filters.user(ADMINS) & ~filters.command(['start','users','broadcast','batch','genlink','stats']))
 async def channel_post(client: Client, message: Message):
