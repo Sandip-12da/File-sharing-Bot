@@ -5,7 +5,7 @@ import re
 import asyncio
 from pyrogram import filters
 from pyrogram.enums import ChatMemberStatus
-from config import FORCE_SUB_CHANNEL, ADMINS
+from config import FORCE_SUB_CHANNEL, ADMINS, FILE_EXPIRATION_TIME
 from pyrogram.errors.exceptions.bad_request_400 import UserNotParticipant
 from pyrogram.errors import FloodWait
 from datetime import datetime, timedelta
@@ -90,6 +90,8 @@ def calculate_expiration_time(custom_duration=None):
     return datetime.utcnow() + timedelta(seconds=duration)
 
 def is_file_expired(expiration_time):
+    if not expiration_time:
+        return False
     return datetime.utcnow() > expiration_time 
     
 def get_readable_time(seconds: int) -> str:
@@ -112,6 +114,5 @@ def get_readable_time(seconds: int) -> str:
     time_list.reverse()
     up_time += ":".join(time_list)
     return up_time
-
 
 subscribed = filters.create(is_subscribed)
