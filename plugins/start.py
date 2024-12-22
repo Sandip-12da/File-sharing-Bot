@@ -14,6 +14,25 @@ from bot import Bot
 from config import ADMINS, FORCE_MSG, START_MSG, CUSTOM_CAPTION, DISABLE_CHANNEL_BUTTON, PROTECT_CONTENT
 from helper_func import subscribed, encode, decode, get_messages
 from database.database import add_user, del_user, full_userbase, present_user
+from database.database import add_file_with_expiry
+from helper_func import is_file_expired
+
+async def start_command(client: Client, message: Message):
+    # ... existing code ...
+    
+    # Before sending file, check expiration
+    file_id = msg.id * abs(client.db_channel.id)
+    file_record = file_data.find_one({'_id': file_id})
+    
+    if file_record and is_file_expired(file_record.get('expiry_time')):
+        await message.reply_text("Sorry, this file has expired.")
+        continue
+    
+    # Add expiry tracking if not already tracked
+    if not file_record:
+        await add_file_with_expiry(file_id)
+    
+    # ... rest of existing code ...
 
 
 
