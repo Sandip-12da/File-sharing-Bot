@@ -1,6 +1,6 @@
 from datetime import datetime, timedelta
 from pymongo import MongoClient
-from config import DB_URI, DB_NAME, FILE_EXPIRATION_TIME, MAX_FILE_DOWNLOADS
+from config import DB_URI, DB_NAME, FILE_EXPIRATION_TIME,
 
 
 
