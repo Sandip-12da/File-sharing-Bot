@@ -8,6 +8,7 @@ from pyrogram.enums import ChatMemberStatus
 from config import FORCE_SUB_CHANNEL, ADMINS
 from pyrogram.errors.exceptions.bad_request_400 import UserNotParticipant
 from pyrogram.errors import FloodWait
+from datetime import datetime, timedelta
 
 async def is_subscribed(filter, client, update):
     if not FORCE_SUB_CHANNEL:
@@ -84,7 +85,13 @@ async def get_message_id(client, message):
     else:
         return 0
 
+def calculate_expiration_time(custom_duration=None):
+    duration = custom_duration or FILE_EXPIRATION_TIME
+    return datetime.utcnow() + timedelta(seconds=duration)
 
+def is_file_expired(expiration_time):
+    return datetime.utcnow() > expiration_time 
+    
 def get_readable_time(seconds: int) -> str:
     count = 0
     up_time = ""
